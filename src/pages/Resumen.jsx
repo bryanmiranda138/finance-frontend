@@ -50,7 +50,7 @@ export default function Resumen() {
             if (!token) return;
 
             // 1. Cargar Perfil (Salarios Mensuales)
-            const resPerfil = await fetch('http://localhost:3000/api/perfil', {
+            const resPerfil = await fetch('import.meta.env.VITE_API_URL/api/perfil', {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             if (resPerfil.ok) {
@@ -66,7 +66,7 @@ export default function Resumen() {
             }
 
             // 2. Cargar Gastos
-            const resGastos = await fetch('http://localhost:3000/api/gastos', {
+            const resGastos = await fetch('import.meta.env.VITE_API_URL/api/gastos', {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
 

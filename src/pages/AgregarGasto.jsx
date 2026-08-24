@@ -39,7 +39,7 @@ export default function AgregarGasto() {
 
             // 2. Enviar la petición a tu backend en Render (Node.js)
             // Nota: Cambia localhost:3000 por la URL de Render cuando lo subas
-            const response = await fetch('http://localhost:3000/api/gastos', {
+            const response = await fetch('import.meta.env.VITE_API_URL/api/gastos', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

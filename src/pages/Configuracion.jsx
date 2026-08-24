@@ -31,7 +31,7 @@ export default function Configuracion() {
             const token = session?.access_token;
 
             try {
-                const res = await fetch('http://localhost:3000/api/perfil', {
+                const res = await fetch('import.meta.env.VITE_API_URL/api/perfil', {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
                 if (res.ok) {
@@ -73,7 +73,7 @@ export default function Configuracion() {
                 salariosNumericos[key] = Number(salarios[key]) || 0;
             });
 
-            const res = await fetch('http://localhost:3000/api/perfil', {
+            const res = await fetch('import.meta.env.VITE_API_URL/api/perfil', {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
