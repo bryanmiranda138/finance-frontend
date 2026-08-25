@@ -23,7 +23,7 @@ export default function Login() {
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900 p-4">
             <div className="max-w-md w-full bg-white dark:bg-gray-800 p-8 rounded-xl shadow-lg">
-                <div className="flex items-center justify-center gap-3 mb-8">
+                <div className="flex items-center justify-center gap-3 mb-8 border-2 border-gray-300 dark:border-gray-600 rounded-lg p-4 bg-transparent">
                     <h3 className="text-2xl font-bold text-blue-900 dark:text-white">
                         Finance
                     </h3>
