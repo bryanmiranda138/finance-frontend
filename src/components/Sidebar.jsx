@@ -47,7 +47,15 @@ export default function Sidebar({ temaOscuro, toggleTema }) {
                 } md:translate-x-0 shadow-2xl md:shadow-none`}>
 
                 <div className="p-6 flex items-center justify-between md:justify-start">
-                    <h2 className="text-2xl font-bold text-white tracking-tight">Finance BC</h2>
+                    {/* Contenedor agrupado para Logo + Texto */}
+                    <div className="flex items-center gap-3">
+                        <img
+                            src="/finance.png"
+                            alt="Logo Finance BC"
+                            className="w-8 h-8 object-contain"
+                        />
+                        <h2 className="text-2xl font-bold text-white tracking-tight">Finance BC</h2>
+                    </div>
 
                     {/* Botón de cerrar (X) solo visible en móvil */}
                     <button onClick={cerrarMenu} className="md:hidden text-gray-400 hover:text-white">
