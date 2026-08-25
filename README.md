@@ -45,4 +45,4 @@ El proyecto fue desarrollado utilizando una arquitectura de cliente-servidor, se
 
 Este proyecto fue estructurado y codificado aplicando principios de diseño seguro y análisis preciso de la información. 
 
-Soy un ex alumno de la Universidad de El Salvador (UES) graduado como Ingeniero de Sistemas Informáticos[cite: 1]. Cuento con especializaciones técnicas en Análisis de Datos y en Ciberseguridad[cite: 1]. Estas disciplinas me han permitido desarrollar esta plataforma con un enfoque riguroso hacia la exactitud matemática y la protección de la información del usuario[cite: 1].
+Soy un ex alumno de la Universidad de El Salvador (UES) graduado como Ingeniero de Sistemas Informáticos. Cuento con especializaciones técnicas en Análisis de Datos y en Ciberseguridad. Estas disciplinas me han permitido desarrollar esta plataforma con un enfoque riguroso hacia la exactitud matemática y la protección de la información del usuario.
