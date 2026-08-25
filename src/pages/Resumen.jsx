@@ -36,8 +36,18 @@ export default function Resumen() {
     const [gastos, setGastos] = useState([]);
     const [salariosMensuales, setSalariosMensuales] = useState({});
     const [tipoGrafico, setTipoGrafico] = useState('pie'); // 'pie' o 'bar'
-    const [filtroAnio, setFiltroAnio] = useState(''); // '' = Todos los años
-    const [filtroMes, setFiltroMes] = useState('');   // '' = Todos los meses
+    // 1. Inicializar el estado leyendo la memoria del navegador
+    const [filtroAnio, setFiltroAnio] = useState(() => localStorage.getItem('finanzas_anio') || '');
+    const [filtroMes, setFiltroMes] = useState(() => localStorage.getItem('finanzas_mes') || '');
+
+    // 2. Guardar automáticamente en memoria cada vez que el usuario cambie el selector
+    useEffect(() => {
+        localStorage.setItem('finanzas_anio', filtroAnio);
+    }, [filtroAnio]);
+
+    useEffect(() => {
+        localStorage.setItem('finanzas_mes', filtroMes);
+    }, [filtroMes]);
     const [cargando, setCargando] = useState(true);
     const [refrescando, setRefrescando] = useState(false);
 
@@ -277,8 +287,8 @@ export default function Resumen() {
                                 onClick={() => setTipoGrafico('pie')}
                                 title="Vista de Pastel"
                                 className={`p-1.5 rounded-md transition-all ${tipoGrafico === 'pie'
-                                        ? 'bg-blue-600 text-white shadow-sm'
-                                        : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+                                    ? 'bg-blue-600 text-white shadow-sm'
+                                    : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
                                     }`}
                             >
                                 <PieIcon size={18} />
@@ -287,8 +297,8 @@ export default function Resumen() {
                                 onClick={() => setTipoGrafico('bar')}
                                 title="Vista de Barras Apiladas"
                                 className={`p-1.5 rounded-md transition-all ${tipoGrafico === 'bar'
-                                        ? 'bg-blue-600 text-white shadow-sm'
-                                        : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+                                    ? 'bg-blue-600 text-white shadow-sm'
+                                    : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
                                     }`}
                             >
                                 <BarChart3 size={18} />

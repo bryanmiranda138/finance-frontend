@@ -18,43 +18,43 @@ export default function AsistenteIA() {
         chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     }, [mensajes]);
 
-    const handleSend = async (e) => {
+    const handleEnviar = async (e) => {
         e.preventDefault();
-        if (!input.trim() || cargando) return;
+        if (!input.trim()) return;
 
-        const preguntaUsuario = input.trim();
+        const mensajeUsuario = { rol: 'usuario', texto: input };
+        setMensajes((prev) => [...prev, mensajeUsuario]);
         setInput('');
-
-        // 1. Agregar mensaje del usuario a la vista
-        setMensajes((prev) => [...prev, { remitente: 'user', texto: preguntaUsuario }]);
         setCargando(true);
 
         try {
-            // 2. Obtener Token JWT de Supabase
             const { data: { session } } = await supabase.auth.getSession();
             const token = session?.access_token;
 
-            // 3. Consultar a la API de Node.js
+            // 1. Leer los filtros guardados en memoria
+            const filtroAnio = localStorage.getItem('finanzas_anio') || '';
+            const filtroMes = localStorage.getItem('finanzas_mes') || '';
+
             const res = await fetch(`${import.meta.env.VITE_API_URL}/api/chat`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
                 },
-                body: JSON.stringify({ pregunta: preguntaUsuario })
+                body: JSON.stringify({
+                    pregunta: input,
+                    filtroAnio, // <-- Enviamos el año
+                    filtroMes   // <-- Enviamos el mes
+                })
             });
 
-            if (!res.ok) throw new Error('Error al conectar con el servidor');
-
+            if (!res.ok) throw new Error('Error en la respuesta del servidor');
             const data = await res.json();
 
-            // 4. Agregar respuesta de Gemini a la vista
-            setMensajes((prev) => [...prev, { remitente: 'bot', texto: data.respuesta }]);
-        } catch (err) {
-            setMensajes((prev) => [
-                ...prev,
-                { remitente: 'bot', texto: 'Lo siento, ocurrió un error al procesar tu consulta. Intenta nuevamente.' }
-            ]);
+            setMensajes((prev) => [...prev, { rol: 'ia', texto: data.respuesta }]);
+        } catch (error) {
+            console.error(error);
+            setMensajes((prev) => [...prev, { rol: 'ia', texto: 'Lo siento, ocurrió un error al procesar tu consulta. Intenta nuevamente.' }]);
         } finally {
             setCargando(false);
         }
@@ -71,22 +71,22 @@ export default function AsistenteIA() {
                 {mensajes.map((msg, idx) => (
                     <div
                         key={idx}
-                        className={`flex items-start gap-3 ${msg.remitente === 'user' ? 'flex-row-reverse' : 'flex-row'
+                        className={`flex items-start gap-3 ${msg.rol === 'usuario' ? 'flex-row-reverse' : 'flex-row'
                             }`}
                     >
                         <div
-                            className={`p-2 rounded-full ${msg.remitente === 'user'
-                                    ? 'bg-blue-600 text-white'
-                                    : 'bg-purple-600 text-white'
+                            className={`p-2 rounded-full ${msg.rol === 'usuario'
+                                ? 'bg-blue-600 text-white'
+                                : 'bg-purple-600 text-white'
                                 }`}
                         >
-                            {msg.remitente === 'user' ? <User size={20} /> : <Bot size={20} />}
+                            {msg.rol === 'usuario' ? <User size={20} /> : <Bot size={20} />}
                         </div>
 
                         <div
-                            className={`max-w-[80%] p-4 rounded-2xl text-sm ${msg.remitente === 'user'
-                                    ? 'bg-blue-600 text-white rounded-tr-none'
-                                    : 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-100 rounded-tl-none'
+                            className={`max-w-[80%] p-4 rounded-2xl text-sm ${msg.rol === 'usuario'
+                                ? 'bg-blue-600 text-white rounded-tr-none'
+                                : 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-100 rounded-tl-none'
                                 }`}
                         >
                             <p className="whitespace-pre-line">{msg.texto}</p>
@@ -104,7 +104,7 @@ export default function AsistenteIA() {
             </div>
 
             {/* Input de envío */}
-            <form onSubmit={handleSend} className="mt-4 flex gap-2">
+            <form onSubmit={handleEnviar} className="mt-4 flex gap-2">
                 <input
                     type="text"
                     value={input}
