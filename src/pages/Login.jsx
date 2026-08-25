@@ -23,11 +23,19 @@ export default function Login() {
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900 p-4">
             <div className="max-w-md w-full bg-white dark:bg-gray-800 p-8 rounded-xl shadow-lg">
-                <a href="/" className="flex items-center justify-center mb-6">
-                    {/* 2. Reemplaza el src con la variable importada */}
-                    <img src={logoFinance} alt="Logo" className="h-12 w-auto" />
-                </a>
-                <h3 className="text-2xl text-center text-blue-900 dark:text-white mb-6">Finance App</h3><br></br>
+                <div className="flex items-center justify-center gap-3 mb-8">
+                    <h3 className="text-2xl font-bold text-blue-900 dark:text-white">
+                        Finance
+                    </h3>
+
+                    <a href="/">
+                        <img src={logoFinance} alt="Logo" className="h-12 w-auto" />
+                    </a>
+
+                    <h3 className="text-2xl font-bold text-blue-900 dark:text-white">
+                        App
+                    </h3>
+                </div>
                 <h2 className="text-2xl font-bold text-center text-gray-900 dark:text-white mb-6">Iniciar Sesión</h2>
 
                 {error && <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">{error}</div>}
