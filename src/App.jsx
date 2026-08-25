@@ -1,26 +1,30 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Outlet } from 'react-router-dom';
-import { ThemeProvider } from './context/ThemeContext';
+import { ThemeProvider, useTheme } from './context/ThemeContext'; // <-- IMPORTAMOS useTheme
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import Sidebar from './components/Sidebar';
 import Login from './pages/Login';
 import Resumen from './pages/Resumen';
-import AgregarGasto from './pages/AgregarGasto'; // <--- IMPORTAR
-import AsistenteIA from './pages/AsistenteIA';   // <--- IMPORTAR
+import AgregarGasto from './pages/AgregarGasto';
+import AsistenteIA from './pages/AsistenteIA';
 import Configuracion from './pages/Configuracion';
 
 // Layout que incluye la barra lateral para las páginas del Dashboard
 function DashboardLayout() {
+  // Extraemos la información del tema oscuro desde nuestro Contexto
+  const { temaOscuro, toggleTema } = useTheme();
+
   return (
-    // Agregamos w-full y overflow-x-hidden para que NADA se salga de la pantalla
     <div className="flex min-h-screen bg-gray-50 dark:bg-gray-950 transition-colors duration-300 w-full overflow-x-hidden">
-      <Sidebar />
       
-      {/* Agregamos min-w-0 (VITAL) para que el contenido permita encogerse */}
+      {/* Le pasamos las propiedades al Sidebar para que el botón funcione */}
+      <Sidebar temaOscuro={temaOscuro} toggleTema={toggleTema} />
+      
       <main className="flex-1 min-w-0 md:ml-64 pt-16 md:pt-0 min-h-screen flex flex-col">
         <Outlet />
       </main>
+      
     </div>
   );
 }
@@ -38,7 +42,8 @@ export default function App() {
             <Route element={<ProtectedRoute />}>
               <Route element={<DashboardLayout />}>
                 <Route path="/" element={<Resumen />} />
-                <Route path="/agregar-gasto" element={<AgregarGasto />} />
+                {/* CORRECCIÓN: Cambiamos de /agregar-gasto a /agregar para que coincida con el menú */}
+                <Route path="/agregar" element={<AgregarGasto />} />
                 <Route path="/configuracion" element={<Configuracion />} />
                 <Route path="/asistente" element={<AsistenteIA />} />
               </Route>
