@@ -25,7 +25,7 @@ export default function Sidebar({ temaOscuro, toggleTema }) {
         <>
             {/* 📱 HEADER MÓVIL (Solo visible en pantallas pequeñas) */}
             <div className="md:hidden fixed top-0 left-0 right-0 h-16 bg-gray-900 text-white z-40 flex items-center justify-between px-6 shadow-md">
-                <span className="font-bold text-xl">FinanzasSPA</span>
+                <span className="font-bold text-xl">Finance BC</span>
                 <button
                     onClick={() => setMenuAbierto(true)}
                     className="p-2 -mr-2 text-gray-300 hover:text-white transition-colors"
@@ -47,7 +47,7 @@ export default function Sidebar({ temaOscuro, toggleTema }) {
                 } md:translate-x-0 shadow-2xl md:shadow-none`}>
 
                 <div className="p-6 flex items-center justify-between md:justify-start">
-                    <h2 className="text-2xl font-bold text-white tracking-tight">FinanzasSPA</h2>
+                    <h2 className="text-2xl font-bold text-white tracking-tight">Finance BC</h2>
 
                     {/* Botón de cerrar (X) solo visible en móvil */}
                     <button onClick={cerrarMenu} className="md:hidden text-gray-400 hover:text-white">
