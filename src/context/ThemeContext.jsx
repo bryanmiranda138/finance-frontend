@@ -1,36 +1,44 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
 
-// 1. Creamos el contexto
 const ThemeContext = createContext();
 
 export function ThemeProvider({ children }) {
-    // 2. Inicializamos el estado verificando si el usuario ya tenía una preferencia guardada
-    const [theme, setTheme] = useState(() => {
-        return localStorage.getItem('theme') || 'light';
-    });
+    const [temaOscuro, setTemaOscuro] = useState(false);
 
-    // 3. Efecto para inyectar/quitar la clase 'dark' en el <html> (necesario para Tailwind)
+    // Leer la memoria del navegador al cargar la página
     useEffect(() => {
-        const root = window.document.documentElement;
-        if (theme === 'dark') {
-            root.classList.add('dark');
-        } else {
-            root.classList.remove('dark');
-        }
-        // Guardamos la preferencia para futuras visitas
-        localStorage.setItem('theme', theme);
-    }, [theme]);
+        const temaGuardado = localStorage.getItem('finanzas_tema');
+        const prefiereOscuro = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
-    const toggleTheme = () => {
-        setTheme((prevTheme) => (prevTheme === 'light' ? 'dark' : 'light'));
+        if (temaGuardado === 'dark' || (!temaGuardado && prefiereOscuro)) {
+            setTemaOscuro(true);
+            document.documentElement.classList.add('dark');
+        } else {
+            setTemaOscuro(false);
+            document.documentElement.classList.remove('dark');
+        }
+    }, []);
+
+    // Función que se ejecuta al presionar el botón en tu Sidebar
+    const toggleTema = () => {
+        setTemaOscuro((prev) => {
+            const nuevoTema = !prev;
+            if (nuevoTema) {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('finanzas_tema', 'dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('finanzas_tema', 'light');
+            }
+            return nuevoTema;
+        });
     };
 
     return (
-        <ThemeContext.Provider value={{ theme, toggleTheme }}>
+        <ThemeContext.Provider value={{ temaOscuro, toggleTema }}>
             {children}
         </ThemeContext.Provider>
     );
 }
 
-// Hook personalizado para usar el tema fácilmente
 export const useTheme = () => useContext(ThemeContext);
