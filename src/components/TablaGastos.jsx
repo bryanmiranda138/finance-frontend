@@ -155,8 +155,8 @@ export default function TablaGastos() {
                 </div>
 
                 {/* Tabla */}
-                <div className="overflow-x-auto">
-                    <table className="w-full text-left border-collapse">
+                <div className="w-full overflow-x-auto pb-4">
+                    <table className="w-full text-left border-collapse min-w-[600px]">
                         <thead>
                             <tr className="bg-gray-50 dark:bg-gray-900/50 text-gray-600 dark:text-gray-300 text-sm uppercase">
                                 <th className="p-4">Fecha</th>

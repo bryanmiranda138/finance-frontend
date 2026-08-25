@@ -13,9 +13,12 @@ import Configuracion from './pages/Configuracion';
 // Layout que incluye la barra lateral para las páginas del Dashboard
 function DashboardLayout() {
   return (
-    <div className="flex min-h-screen bg-gray-50 dark:bg-gray-950 transition-colors duration-300">
+    // Agregamos w-full y overflow-x-hidden para que NADA se salga de la pantalla
+    <div className="flex min-h-screen bg-gray-50 dark:bg-gray-950 transition-colors duration-300 w-full overflow-x-hidden">
       <Sidebar />
-      <main className="flex-1 md:ml-64 pt-16 md:pt-0 min-h-screen flex flex-col">
+      
+      {/* Agregamos min-w-0 (VITAL) para que el contenido permita encogerse */}
+      <main className="flex-1 min-w-0 md:ml-64 pt-16 md:pt-0 min-h-screen flex flex-col">
         <Outlet />
       </main>
     </div>
