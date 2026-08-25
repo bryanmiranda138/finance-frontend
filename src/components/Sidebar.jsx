@@ -25,7 +25,18 @@ export default function Sidebar({ temaOscuro, toggleTema }) {
         <>
             {/* 📱 HEADER MÓVIL (Solo visible en pantallas pequeñas) */}
             <div className="md:hidden fixed top-0 left-0 right-0 h-16 bg-gray-900 text-white z-40 flex items-center justify-between px-6 shadow-md">
-                <span className="font-bold text-xl">Finance BC</span>
+
+                {/* Contenedor agrupado para Logo + Texto en Móvil */}
+                <div className="flex items-center gap-3">
+                    <img
+                        src="/finance.png"
+                        alt="Logo Finance BC"
+                        className="w-7 h-7 object-contain"
+                    />
+                    <span className="font-bold text-xl tracking-tight">Finance BC</span>
+                </div>
+
+                {/* Botón de Menú Hamburguesa */}
                 <button
                     onClick={() => setMenuAbierto(true)}
                     className="p-2 -mr-2 text-gray-300 hover:text-white transition-colors"
