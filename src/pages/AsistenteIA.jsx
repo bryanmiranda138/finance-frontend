@@ -39,6 +39,9 @@ export default function AsistenteIA() {
         if (!input.trim()) return;
 
         const mensajeUsuario = { rol: 'usuario', texto: input };
+        // Capturamos la conversación hasta este punto ANTES de agregar el mensaje nuevo
+        const historialPrevio = [...mensajes];
+
         setMensajes((prev) => [...prev, mensajeUsuario]);
         setInput('');
         setCargando(true);
@@ -47,7 +50,6 @@ export default function AsistenteIA() {
             const { data: { session } } = await supabase.auth.getSession();
             const token = session?.access_token;
 
-            // Leemos las fechas filtradas para dárselas a la IA
             const filtroAnio = localStorage.getItem('finanzas_anio') || '';
             const filtroMes = localStorage.getItem('finanzas_mes') || '';
 
@@ -60,7 +62,8 @@ export default function AsistenteIA() {
                 body: JSON.stringify({
                     pregunta: input,
                     filtroAnio,
-                    filtroMes
+                    filtroMes,
+                    historial: historialPrevio // 🧠 ¡ENVIAMOS LA MEMORIA AL BACKEND!
                 })
             });
 
@@ -98,8 +101,8 @@ export default function AsistenteIA() {
                     {mensajes.map((msg, index) => (
                         <div key={index} className={`flex ${msg.rol === 'usuario' ? 'justify-end' : 'justify-start'}`}>
                             <div className={`max-w-[80%] rounded-2xl p-4 flex gap-3 ${msg.rol === 'usuario'
-                                    ? 'bg-blue-600 text-white rounded-tr-sm'
-                                    : 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-100 rounded-tl-sm'
+                                ? 'bg-blue-600 text-white rounded-tr-sm'
+                                : 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-100 rounded-tl-sm'
                                 }`}>
                                 <div className="mt-1">
                                     {msg.rol === 'usuario' ? <User size={20} /> : <Bot size={20} />}
