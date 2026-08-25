@@ -35,7 +35,7 @@ export default function AsistenteIA() {
             const token = session?.access_token;
 
             // 3. Consultar a la API de Node.js
-            const res = await fetch('import.meta.env.VITE_API_URL/api/chat', {
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/chat`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

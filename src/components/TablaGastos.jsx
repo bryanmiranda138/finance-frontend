@@ -37,7 +37,7 @@ export default function TablaGastos() {
             setCargando(true);
             const token = await obtenerToken();
 
-            const res = await fetch('import.meta.env.VITE_API_URL/api/gastos', {
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/gastos`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
 
@@ -61,7 +61,7 @@ export default function TablaGastos() {
 
         try {
             const token = await obtenerToken();
-            const res = await fetch(`import.meta.env.VITE_API_URL/api/gastos/${id}`, {
+            const res = await fetch(`{import.meta.env.VITE_API_URL}/api/gastos/${id}`, {
                 method: 'DELETE',
                 headers: { 'Authorization': `Bearer ${token}` }
             });
@@ -79,7 +79,7 @@ export default function TablaGastos() {
     const handleSaveEdit = async (gastoActualizado) => {
         try {
             const token = await obtenerToken();
-            const res = await fetch(`import.meta.env.VITE_API_URL/api/gastos/${gastoActualizado.id}`, {
+            const res = await fetch(`{import.meta.env.VITE_API_URL}/api/gastos/${gastoActualizado.id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
