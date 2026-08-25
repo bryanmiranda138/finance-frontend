@@ -27,6 +27,7 @@ export default function Login() {
                     {/* 2. Reemplaza el src con la variable importada */}
                     <img src={logoFinance} alt="Logo" className="h-12 w-auto" />
                 </a>
+                <h3 className="text-2xl text-center text-gray-900 dark:text-white mb-6">Finance App</h3>
                 <h2 className="text-2xl font-bold text-center text-gray-900 dark:text-white mb-6">Iniciar Sesión</h2>
 
                 {error && <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">{error}</div>}
