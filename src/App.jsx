@@ -9,6 +9,7 @@ import Resumen from './pages/Resumen';
 import AgregarGasto from './pages/AgregarGasto';
 import AsistenteIA from './pages/AsistenteIA';
 import Configuracion from './pages/Configuracion';
+import CalculadoraFlotante from './components/CalculadoraFlotante'; // 👈 IMPORTAR AQUÍ
 
 // Layout que incluye la barra lateral para las páginas del Dashboard
 function DashboardLayout() {
@@ -22,6 +23,7 @@ function DashboardLayout() {
       <main className="flex-1 min-w-0 md:ml-64 pt-16 md:pt-0 min-h-screen flex flex-col">
         <Outlet />
       </main>
+      <CalculadoraFlotante />
     </div>
   );
 }
