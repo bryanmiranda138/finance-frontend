@@ -51,12 +51,13 @@ export default function CalculadoraFlotante() {
     };
 
     return (
-        // CAMBIO 1: Cambiamos bottom-6 por bottom-24 para subir la burbuja por encima del chat
-        <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end">
+        // CAMBIO 1: Anclado al centro vertical (top-1/2), en fila (flex), y alineado al centro
+        <div className="fixed top-1/2 right-6 z-50 flex items-center -translate-y-1/2">
 
             {/* 🧮 Panel de la Calculadora */}
+            {/* CAMBIO 2: Margen derecho (mr-4) y origen de animación a la derecha (origin-right) */}
             <div
-                className={`mb-4 bg-white dark:bg-gray-800 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 w-72 overflow-hidden transition-all duration-300 origin-bottom-right ${abierta ? 'scale-100 opacity-100' : 'scale-0 opacity-0 pointer-events-none'
+                className={`mr-4 bg-white dark:bg-gray-800 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 w-72 overflow-hidden transition-all duration-300 origin-right ${abierta ? 'scale-100 opacity-100' : 'scale-0 opacity-0 pointer-events-none'
                     }`}
             >
                 <div className="bg-blue-600 text-white px-4 py-3 flex justify-between items-center">
@@ -108,10 +109,10 @@ export default function CalculadoraFlotante() {
                 </div>
             </div>
 
-            {/* CAMBIO 2: Botón Flotante con paleta Azul */}
+            {/* CAMBIO 3: Añadí 'shrink-0' para que el botón jamás se aplaste al abrir el panel */}
             <button
                 onClick={() => setAbierta(!abierta)}
-                className="w-14 h-14 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-lg shadow-blue-500/40 flex items-center justify-center transition-transform duration-300 hover:scale-110 active:scale-95"
+                className="w-14 h-14 shrink-0 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-lg shadow-blue-500/40 flex items-center justify-center transition-transform duration-300 hover:scale-110 active:scale-95"
             >
                 <Calculator size={24} className={abierta ? "rotate-12 transition-transform" : "transition-transform"} />
             </button>
