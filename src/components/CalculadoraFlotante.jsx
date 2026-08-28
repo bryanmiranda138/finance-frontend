@@ -52,7 +52,7 @@ export default function CalculadoraFlotante() {
 
     return (
         // CAMBIO 1: Cambiamos bottom-6 por bottom-24 para subir la burbuja por encima del chat
-        <div className="fixed bottom-24 right-6 z-50 flex flex-col items-end">
+        <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end">
 
             {/* 🧮 Panel de la Calculadora */}
             <div
