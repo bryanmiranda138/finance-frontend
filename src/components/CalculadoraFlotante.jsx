@@ -51,7 +51,8 @@ export default function CalculadoraFlotante() {
     };
 
     return (
-        <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end">
+        // CAMBIO 1: Cambiamos bottom-6 por bottom-24 para subir la burbuja por encima del chat
+        <div className="fixed bottom-24 right-6 z-50 flex flex-col items-end">
 
             {/* 🧮 Panel de la Calculadora */}
             <div
@@ -107,10 +108,10 @@ export default function CalculadoraFlotante() {
                 </div>
             </div>
 
-            {/* 🔴 Botón Flotante (Burbuja Roja) */}
+            {/* CAMBIO 2: Botón Flotante con paleta Azul */}
             <button
                 onClick={() => setAbierta(!abierta)}
-                className="w-14 h-14 bg-red-600 hover:bg-red-700 text-white rounded-full shadow-[0_8px_16px_rgba(220,38,38,0.4)] flex items-center justify-center transition-transform duration-300 hover:scale-110 active:scale-95"
+                className="w-14 h-14 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-lg shadow-blue-500/40 flex items-center justify-center transition-transform duration-300 hover:scale-110 active:scale-95"
             >
                 <Calculator size={24} className={abierta ? "rotate-12 transition-transform" : "transition-transform"} />
             </button>
