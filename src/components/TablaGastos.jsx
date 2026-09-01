@@ -8,8 +8,19 @@ export default function TablaGastos() {
     const [error, setError] = useState(null);
 
     // Estados de filtros
-    const [filtroMes, setFiltroMes] = useState('');
-    const [filtroCategoria, setFiltroCategoria] = useState('');
+    // 1. Inicializar leyendo la memoria del navegador
+    const [filtroMes, setFiltroMes] = useState(() => localStorage.getItem('finanzas_detalle_mes') || '');
+    const [filtroCategoria, setFiltroCategoria] = useState(() => localStorage.getItem('finanzas_detalle_categoria') || '');
+
+    // 2. Guardar automáticamente cada vez que el usuario cambie el mes
+    useEffect(() => {
+        localStorage.setItem('finanzas_detalle_mes', filtroMes);
+    }, [filtroMes]);
+
+    // 3. Guardar automáticamente cada vez que el usuario cambie la categoría
+    useEffect(() => {
+        localStorage.setItem('finanzas_detalle_categoria', filtroCategoria);
+    }, [filtroCategoria]);
 
     // Estados del Modal
     const [isModalOpen, setIsModalOpen] = useState(false);
