@@ -18,9 +18,16 @@ const MESES = [
 ];
 
 export default function Configuracion() {
-    const [salarios, setSalarios] = useState({
-        '01': 0, '02': 0, '03': 0, '04': 0, '05': 0, '06': 0,
-        '07': 0, '08': 0, '09': 0, '10': 0, '11': 0, '12': 0
+    // 1. Leemos el caché primero. Si está vacío, usamos los ceros por defecto.
+    const [salarios, setSalarios] = useState(() => {
+        const salariosCacheados = localStorage.getItem('finanzas_salarios_cache');
+        if (salariosCacheados) {
+            return JSON.parse(salariosCacheados);
+        }
+        return {
+            '01': 0, '02': 0, '03': 0, '04': 0, '05': 0, '06': 0,
+            '07': 0, '08': 0, '09': 0, '10': 0, '11': 0, '12': 0
+        };
     });
     const [mensaje, setMensaje] = useState({ tipo: '', texto: '' });
     const [cargando, setCargando] = useState(false);
@@ -38,11 +45,15 @@ export default function Configuracion() {
                     const data = await res.json();
                     if (data.salarios_mensuales) {
                         setSalarios(prev => ({ ...prev, ...data.salarios_mensuales }));
+                        // 🔥 Guardamos los datos frescos de la base de datos en la memoria
+                        localStorage.setItem('finanzas_salarios_cache', JSON.stringify(data.salarios_mensuales));
                     } else if (data.salario_neto) {
                         const base = Number(data.salario_neto) || 0;
                         const inicial = {};
                         MESES.forEach(m => { inicial[m.valor] = base; });
                         setSalarios(inicial);
+                        // 🔥 Guardamos el salario base generado en la memoria
+                        localStorage.setItem('finanzas_salarios_cache', JSON.stringify(inicial));
                     }
                 }
             } catch (error) {
@@ -86,6 +97,10 @@ export default function Configuracion() {
             });
 
             if (!res.ok) throw new Error('Error al actualizar');
+
+            // 🔥 Actualizamos la caché inmediatamente después de guardar exitosamente
+            localStorage.setItem('finanzas_salarios_cache', JSON.stringify(salariosNumericos));
+
             setMensaje({ tipo: 'exito', texto: 'Salarios mensuales guardados correctamente.' });
         } catch (error) {
             setMensaje({ tipo: 'error', texto: 'No se pudo guardar la configuración.' });
