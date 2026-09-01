@@ -33,14 +33,23 @@ const MESES = [
 ];
 
 export default function Resumen() {
-    const [gastos, setGastos] = useState([]);
-    const [salariosMensuales, setSalariosMensuales] = useState({});
+    // 🔥 1. Inicialización ultra-rápida desde Caché (Gastos y Salarios)
+    const [gastos, setGastos] = useState(() => {
+        const gastosCacheados = localStorage.getItem('finanzas_gastos_cache');
+        return gastosCacheados ? JSON.parse(gastosCacheados) : [];
+    });
+    
+    const [salariosMensuales, setSalariosMensuales] = useState(() => {
+        const salariosCacheados = localStorage.getItem('finanzas_salarios_cache');
+        return salariosCacheados ? JSON.parse(salariosCacheados) : {};
+    });
+
     const [tipoGrafico, setTipoGrafico] = useState('pie'); // 'pie' o 'bar'
-    // 1. Inicializar el estado leyendo la memoria del navegador
+    
+    // Memorización de filtros de fecha
     const [filtroAnio, setFiltroAnio] = useState(() => localStorage.getItem('finanzas_anio') || '');
     const [filtroMes, setFiltroMes] = useState(() => localStorage.getItem('finanzas_mes') || '');
 
-    // 2. Guardar automáticamente en memoria cada vez que el usuario cambie el selector
     useEffect(() => {
         localStorage.setItem('finanzas_anio', filtroAnio);
     }, [filtroAnio]);
@@ -48,7 +57,14 @@ export default function Resumen() {
     useEffect(() => {
         localStorage.setItem('finanzas_mes', filtroMes);
     }, [filtroMes]);
-    const [cargando, setCargando] = useState(true);
+
+    // 🔥 2. Carga Inteligente: Si hay caché, no mostramos pantalla de carga inicial
+    const [cargando, setCargando] = useState(() => {
+        const hayGastos = localStorage.getItem('finanzas_gastos_cache');
+        const haySalarios = localStorage.getItem('finanzas_salarios_cache');
+        return !(hayGastos && haySalarios);
+    });
+    
     const [refrescando, setRefrescando] = useState(false);
 
     const fetchDatos = async () => {
@@ -63,15 +79,20 @@ export default function Resumen() {
             const resPerfil = await fetch(`${import.meta.env.VITE_API_URL}/api/perfil`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
+            
             if (resPerfil.ok) {
                 const perfil = await resPerfil.json();
                 if (perfil.salarios_mensuales) {
                     setSalariosMensuales(perfil.salarios_mensuales);
+                    // 🔥 Actualizamos la caché
+                    localStorage.setItem('finanzas_salarios_cache', JSON.stringify(perfil.salarios_mensuales));
                 } else if (perfil.salario_neto) {
                     const base = Number(perfil.salario_neto) || 0;
                     const inicial = {};
                     MESES.forEach(m => { inicial[m.valor] = base; });
                     setSalariosMensuales(inicial);
+                    // 🔥 Actualizamos la caché
+                    localStorage.setItem('finanzas_salarios_cache', JSON.stringify(inicial));
                 }
             }
 
@@ -81,8 +102,11 @@ export default function Resumen() {
             });
 
             if (!resGastos.ok) throw new Error('Error al cargar gastos');
+            
             const dataGastos = await resGastos.json();
             setGastos(dataGastos);
+            // 🔥 Actualizamos la caché
+            localStorage.setItem('finanzas_gastos_cache', JSON.stringify(dataGastos));
 
         } catch (error) {
             console.error("Error al cargar datos en Resumen:", error);
